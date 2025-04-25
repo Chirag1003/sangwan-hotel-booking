@@ -1,32 +1,4 @@
-// import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-// import Home from './pages/Home';
-// import Rooms from './pages/Rooms';
-// import Contact from './pages/Contact';
-// import Login from './pages/Login';
-// import Register from './pages/Register';
-// import Navbar from './components/Navbar';
-// import Booking from './pages/Booking';
-// import BookingSummary from './pages/BookingSummary';
-// import AdminPanel from './pages/AdminPanel';
-// function App() {
-//   return (
-//     <Router>
-//       <Navbar />
-//       <Routes>
-//       <Route path="/booking" element={<Booking />} />
-//         <Route path="/" element={<Home />} />
-//         <Route path="/rooms" element={<Rooms />} />
-//         <Route path="/contact" element={<Contact />} />
-//         <Route path="/login" element={<Login />} />
-//         <Route path="/register" element={<Register />} />
-//         <Route path="/summary" element={<BookingSummary />} />
-//         <Route path="/admin" element={<AdminPanel/>} />
-//       </Routes>
-//     </Router>
-//   );
-// }
 
-// export default App;
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';

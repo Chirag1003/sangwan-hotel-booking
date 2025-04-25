@@ -1,31 +1,4 @@
-// const express = require('express');
-// const router = express.Router();
-// const Booking = require('../models/Booking');
 
-// // POST /api/bookings - Save a new booking
-// router.post('/', async (req, res) => {
-//   try {
-//     const newBooking = new Booking(req.body);
-//     const savedBooking = await newBooking.save();
-//     res.status(201).json(savedBooking);
-//   } catch (err) {
-//     console.error('❌ Backend Validation Error:', err.message); // Logs helpful error
-//     res.status(400).json({ error: err.message });
-//   }
-// });
-
-// // GET /api/bookings - Fetch all bookings (admin/testing)
-// router.get('/', async (req, res) => {
-//   try {
-//     const bookings = await Booking.find();
-//     res.json(bookings);
-//   } catch (err) {
-//     console.error('❌ Error fetching bookings:', err.message);
-//     res.status(500).json({ error: err.message });
-//   }
-// });
-
-// module.exports = router;
 const express = require('express');
 const router = express.Router();
 const Booking = require('../models/Booking');
