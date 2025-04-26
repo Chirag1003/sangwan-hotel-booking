@@ -1,10 +1,10 @@
-
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+// Star rating component
 const StarRating = ({ rating, onRatingChange }) => {
-  const handleClick = (starIndex) => {
-    if (onRatingChange) onRatingChange(starIndex + 1);
+  const handleClick = (index) => {
+    if (onRatingChange) onRatingChange(index + 1);
   };
 
   return (
@@ -40,9 +40,27 @@ export default function Profile() {
     }
     setUserDetails(user);
 
-    const allBookings = JSON.parse(localStorage.getItem('userBookings')) || {};
-    const userBookings = allBookings[user.email] || [];
-    setBookings(userBookings);
+    // ✅ Fetch bookings from backend
+    fetch(`http://localhost:5000/api/bookings/user/${user.email}`)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log('Bookings fetched from backend:', data); // ✅ Show fetched data in console
+        if (Array.isArray(data)) {
+          const ratings = JSON.parse(localStorage.getItem('bookingRatings')) || {};
+          const enrichedBookings = data.map((booking) => ({
+            ...booking,
+            rating: ratings[booking._id] || 0,
+          }));
+          setBookings(enrichedBookings);
+        } else {
+          console.error('Bookings API did not return an array:', data);
+          setBookings([]);
+        }
+      })
+      .catch((err) => {
+        console.error('Failed to load bookings:', err);
+        setBookings([]);
+      });
   }, [navigate]);
 
   const handleLogout = () => {
@@ -53,25 +71,32 @@ export default function Profile() {
     window.location.reload();
   };
 
-  const handleRatingChange = (index, rating) => {
-    const updatedBookings = [...bookings];
-    updatedBookings[index].rating = rating;
+  const handleRatingChange = (bookingId, rating) => {
+    const updatedBookings = bookings.map((booking) =>
+      booking._id === bookingId ? { ...booking, rating } : booking
+    );
     setBookings(updatedBookings);
 
-    const allBookings = JSON.parse(localStorage.getItem('userBookings')) || {};
-    const userEmail = userDetails?.email;
-    allBookings[userEmail] = updatedBookings;
-    localStorage.setItem('userBookings', JSON.stringify(allBookings));
+    const ratings = JSON.parse(localStorage.getItem('bookingRatings')) || {};
+    ratings[bookingId] = rating;
+    localStorage.setItem('bookingRatings', JSON.stringify(ratings));
   };
+
+  if (!userDetails) return null; // If no user, don't render
 
   return (
     <div className="p-6 bg-gray-100 mt-20">
       <div className="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-lg space-y-6">
+        
+        {/* User Info */}
         <div className="text-center bg-gray-50 p-6 rounded-lg shadow-md">
-          <h2 className="text-3xl font-semibold text-black">Hi, {userDetails?.firstName || userDetails?.email}</h2>
-          <div className="text-gray-500">{userDetails?.email}</div>
+          <h2 className="text-3xl font-semibold text-black">
+            Hi, {userDetails.firstName || userDetails.email}
+          </h2>
+          <div className="text-gray-500">{userDetails.email}</div>
         </div>
 
+        {/* Bookings Section */}
         <div>
           <h2 className="text-4xl font-semibold text-center">Your Bookings</h2>
           <div className="mt-6 text-center">
@@ -85,19 +110,37 @@ export default function Profile() {
           ) : (
             <div className="space-y-4 mt-4">
               {bookings.map((booking, index) => (
-                <div key={index} className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition">
+                <div
+                  key={booking._id}
+                  className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition"
+                >
                   <h4 className="text-xl font-medium text-gray-800">Booking #{index + 1}</h4>
-                  <p className="text-gray-600"><strong>Check-in:</strong> {booking.checkin}</p>
-                  <p className="text-gray-600"><strong>Check-out:</strong> {booking.checkout}</p>
+                  <p className="text-gray-600"><strong>Check-in:</strong> {new Date(booking.checkin).toLocaleDateString()}</p>
+                  <p className="text-gray-600"><strong>Check-out:</strong> {new Date(booking.checkout).toLocaleDateString()}</p>
                   <p className="text-gray-600"><strong>Room Type:</strong> {booking.roomCategory}</p>
                   <p className="text-gray-600"><strong>Guests:</strong> {booking.guests}</p>
                   <p className="text-gray-600"><strong>Total Price:</strong> ${booking.totalPrice}</p>
 
+                  {/* Meals */}
+                  {booking.meals && (
+                    <div className="text-gray-600 mt-2">
+                      <strong>Meals:</strong>
+                      <ul className="list-disc ml-6">
+                        {Object.entries(booking.meals).map(([meal, qty]) => (
+                          <li key={meal}>
+                            {meal}: {qty}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                  {/* Rating */}
                   <div className="mt-4">
                     <p className="text-gray-600"><strong>Rate Your Stay:</strong></p>
                     <StarRating
                       rating={booking.rating || 0}
-                      onRatingChange={(rating) => handleRatingChange(index, rating)}
+                      onRatingChange={(rating) => handleRatingChange(booking._id, rating)}
                     />
                   </div>
                 </div>
@@ -106,6 +149,7 @@ export default function Profile() {
           )}
         </div>
 
+        {/* Logout Button */}
         <div className="flex justify-center mt-6">
           <button
             onClick={handleLogout}
@@ -114,6 +158,7 @@ export default function Profile() {
             Logout
           </button>
         </div>
+
       </div>
     </div>
   );

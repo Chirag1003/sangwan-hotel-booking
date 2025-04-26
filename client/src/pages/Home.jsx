@@ -60,6 +60,7 @@ export default function Home() {
       <section
         className="relative h-screen w-full bg-cover bg-center"
         style={{ backgroundImage: `url('https://images.pexels.com/photos/2901215/pexels-photo-2901215.jpeg?auto=compress&cs=tinysrgb&w=600')`}}
+        // style={{ backgroundImage: `url(${abcImage})`}}
       >
         <div className="absolute inset-0 bg-black bg-opacity-50"></div>
 

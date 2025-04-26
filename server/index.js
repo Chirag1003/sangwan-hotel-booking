@@ -9,6 +9,8 @@ dotenv.config();
 connectDB();
 
 const app = express();
+const roomRoutes = require('./routes/roomRoutes');
+const mealRoutes = require('./routes/mealRoutes');
 
 // ✅ Middleware
 app.use(cors());
@@ -19,10 +21,12 @@ app.get('/', (req, res) => {
   res.send('API is running...');
 });
 
-app.use('/api/bookings', bookingRoutes); // booking-related routes
-app.use('/api/users', userRoutes);       // user login/register routes
+app.use('/api/bookings', bookingRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/rooms', roomRoutes);
+app.use('/api/meals', mealRoutes); // 👈 meals comes before 404
 
-// ✅ Optional: 404 fallback
+// ✅ 404 fallback must be LAST
 app.use((req, res) => {
   res.status(404).json({ message: 'Route not found' });
 });

@@ -1,18 +1,15 @@
-
-
 const mongoose = require('mongoose');
 
 const bookingSchema = new mongoose.Schema({
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  bookedBy: String,
   guests: Number,
   checkin: Date,
   checkout: Date,
   roomCategory: String,
-  breakfast: Number,
-  dinner: Number,
+  paymentMethod: String,
+  meals: Object, // ✅ new field
   guestDetails: [{ name: String, age: Number }],
   totalPrice: Number,
-}, { timestamps: true });
+});
 
-const Booking = mongoose.model('Booking', bookingSchema);
-module.exports = Booking;
+module.exports = mongoose.model('Booking', bookingSchema);
