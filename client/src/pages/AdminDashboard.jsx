@@ -5,9 +5,9 @@
 
 //   useEffect(() => {
 //     const fetchStats = async () => {
-//       const users = await fetch('/api/users').then(res => res.json());
-//       const rooms = await fetch('/api/rooms').then(res => res.json());
-//       const bookings = await fetch('/api/bookings').then(res => res.json());
+//       const users = await fetch('https://sangwan-hotel-booking.onrender.com/api/users').then(res => res.json());
+//       const rooms = await fetch('https://sangwan-hotel-booking.onrender.com/api/rooms').then(res => res.json());
+//       const bookings = await fetch('https://sangwan-hotel-booking.onrender.com/api/bookings').then(res => res.json());
       
 
 //       setStats({ users: users.length, rooms: rooms.length, bookings: bookings.length });
@@ -42,10 +42,10 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     const fetchStats = async () => {
-      const users = await fetch('/api/users').then(res => res.json());
-      const rooms = await fetch('/api/rooms').then(res => res.json());
-      const bookings = await fetch('/api/bookings').then(res => res.json());
-      const meals = await fetch('/api/meals').then(res => res.json());
+      const users = await fetch('https://sangwan-hotel-booking.onrender.com/api/users').then(res => res.json());
+      const rooms = await fetch('https://sangwan-hotel-booking.onrender.com/api/rooms').then(res => res.json());
+      const bookings = await fetch('https://sangwan-hotel-booking.onrender.com/api/bookings').then(res => res.json());
+      const meals = await fetch('https://sangwan-hotel-booking.onrender.com/api/meals').then(res => res.json());
 
       setStats({
         users: users.length,

@@ -5,7 +5,7 @@
 //   const [form, setForm] = useState({ title: '', price: '', image: '' });
 
 //   const fetchRooms = async () => {
-//     const res = await fetch('/api/rooms');
+//     const res = await fetch('https://sangwan-hotel-booking.onrender.com/api/rooms');
 //     const data = await res.json();
 //     setRooms(data);
 //   };
@@ -105,7 +105,7 @@ export default function AdminRooms() {
   const [editingForm, setEditingForm] = useState({ title: '', price: '', image: '' });
 
   const fetchRooms = async () => {
-    const res = await fetch('/api/rooms');
+    const res = await fetch('https://sangwan-hotel-booking.onrender.com/api/rooms');
     const data = await res.json();
     setRooms(data);
   };
