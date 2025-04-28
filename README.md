@@ -3,8 +3,7 @@
 
 A fully responsive hotel booking web application built with **React.js**, designed for both **user-facing reservations** and a clean **admin panel** for managing bookings.
 Live Demo
-You can view the live project here: sangwan-hotel-booking-yjtv.vercel.app/
-
+You can view the live project here: https://sangwan-hotel-booking-yjtv.vercel.app/
 
 ---
 
